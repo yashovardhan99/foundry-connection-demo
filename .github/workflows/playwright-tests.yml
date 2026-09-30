@@ -5,6 +5,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: parabank
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -12,6 +13,9 @@ jobs:
           python-version: 3.12
       - run: pip install pytest pytest-bdd pytest-playwright && playwright install --with-deps chromium
       - run: python -m pytest generated_tests --junitxml=test-results/junit.xml
+        env:
+          PARABANK_USERNAME: ${{ secrets.PARABANK_USERNAME }}
+          PARABANK_PASSWORD: ${{ secrets.PARABANK_PASSWORD }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
